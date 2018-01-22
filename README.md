@@ -1,12 +1,14 @@
 # docker-compose-lamp
-A simple set of dockers for running a local Drupal or WordPress LAMP
+A simple set of dockers for running a local LAMP
 - Apache 2.4
 - PHP 7.0
 - MariaDB 10.1
 
 ## General Usage Information
 
-By default this mounts the /var/www/html directory to ~/public_html on your Linux OS.  From here you can install drupal using Drush or use any website files. It is intended to keep all of the web application files outside of the containers so you can easily work on the files. The database should go in the mariadb container included with this.
+By default this mounts the /var/www/html directory to ./app on your host OS.  It is intended to keep all of the web application files outside of the containers so you can easily work on the files. The database files are persisted to the ./data directory.
+
+The database hostname is set to `db`.
 
 ## Setup
 
@@ -20,11 +22,7 @@ If your running Ubuntu or Fedora as your local development environment you shoul
 
 ### To run the containers
 
-`mkdir ~/public_html; sudo chown -R 33:33 ~/public_html; sudo chmod g+s ~/public_html`  (Sets the correct permissions on the folder)
-
 `docker-compose up -d` (Starts the Containers)
-
-
 
 ## Example Fresh Drupal install:
 
@@ -34,22 +32,7 @@ If your running Ubuntu or Fedora as your local development environment you shoul
 
 `drush site-install standard --db-url='mysql://root:docker@172.17.0.2/drupaldb' --site-name=Example`
 
-### Notes about Drush
-* You need to have Drush, php-mysqlnd/php-mysql, php-gd, php, php-common, and MariaDB-client packages installed locally for Drush to be able to connect to the mariadb container.
-
-* You need to change the IP address above 172.17.0.2 to the IP of your database container. You can do a `docker inspect your_database_container` to find the IP.
-
-## Example import existing Drupal install:
-
--  Copy your Drupal site files to ~/public_html
--  In phpMyAdmin create a new user, and database which matches the credentials in your Drupal sites/default/settings.php file.
--  Import a dump of your database using phpMyAdmin
-
 ### Accessing the web server
 
-Navigate to [http://localhost:8180](http://localhost:8180)
-
-### Accessing phpMyadmin
-
-Navigate [http://localhost:8181](http://localhost:8181)
+Navigate to [http://localhost:8888](http://localhost:8888)
 
