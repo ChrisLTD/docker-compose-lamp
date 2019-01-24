@@ -5,7 +5,7 @@ services:
     links:
       - maria_db:db
     ports:
-      - 8888:80
+      - 8080:80
     volumes:
       - ./app:/var/www/html
   maria_db:
@@ -16,7 +16,18 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
-      - 8081:3306
+      - 8082:3306
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    restart: always
+    links:
+      - maria_db:db
+    ports:
+      - "8081:80"
+    volumes:
+      - /sessions
 
 volumes:
   data:
